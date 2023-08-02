@@ -1,3 +1,4 @@
+# flake8: noqa
 import environ
 import os
 from pathlib import Path
