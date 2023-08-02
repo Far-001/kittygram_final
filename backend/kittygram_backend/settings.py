@@ -1,14 +1,21 @@
 # flake8: noqa
+import environ
 import os
 from pathlib import Path
 
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'secret')
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = os.getenv('SERVERNAMES', '127.0.0.1, localhost').split(',')
+DEBUG = env('DEBUG')
+
+ALLOWED_HOSTS = env.list('SERVERNAMES', default=["*"])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,8 +66,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOST', 'host'),
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
