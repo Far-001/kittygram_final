@@ -1,17 +1,17 @@
-# flake8: noqa
 import environ
 import os
 from pathlib import Path
 
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'token')
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = os.getenv('SECRET_KEY', default='token')
+SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env('DEBUG')
 
